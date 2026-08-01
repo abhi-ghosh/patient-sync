@@ -16,14 +16,16 @@ export default function MainContent({whichForm, setWhichForm, children}){
             <Monitor/>Staff Monitor
           </button>
         </div>
-        {whichForm === "patient" ? PatientPanel : StaffPanel}
+        <div className="px-6 py-8">
+          {whichForm === "patient" ? PatientPanel : StaffPanel}
+        </div>
       </div>
-      <div className="hidden lg:grid lg:grid-cols-2 gap-6">
-        <div className="max-h-screen overflow-y-auto">
+      <div className="hidden lg:grid lg:grid-cols-2">
+        <div className="max-h-screen overflow-y-auto border-r-2 border-border px-8 py-8">
           {PatientPanel}
         </div>
 
-        <div className="max-h-screen overflow-y-auto">
+        <div className="max-h-screen overflow-y-auto px-8 py-8">
           {StaffPanel}
         </div>
       </div>

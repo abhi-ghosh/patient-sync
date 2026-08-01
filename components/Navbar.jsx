@@ -12,7 +12,7 @@ export default function Navbar({changeTheme,darkMode}){
         </div>
       </div>
       {/* Ligth or Dark Theme Toggle */}
-      <button onClick={changeTheme} className="bg-accent dark:bg-muted-foreground
+      <button onClick={changeTheme} className="bg-accent
         text-primary-foreground w-20 py-2 px-2 rounded-lg flex items-center justify-center
         gap-2 cursor-pointer hover:scale-105 active:scale-95 transition-all duration-200 ease">
           {darkMode ? <Sun className="w-4 h-4"/> : <Moon className="w-4 h-4"/>}

@@ -1,11 +1,13 @@
 import { User,Phone, Heart, Globe } from "lucide-react";
+import SectionHeader from "@/components/SectionHeader";
 export default function PatientPanel({userOptions}) {
 
   //Reusable Input Form Styles
   const inputStyles = "w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-ring";
+  const sectionStyle = "flex flex-col gap-6";
 
   return (
-    <div className="px-4 py-8 flex flex-col gap-6">
+    <div className="flex flex-col gap-6">
 
       {/* Header */}
       <div className="text-foreground flex gap-1 flex-col">
@@ -19,7 +21,7 @@ export default function PatientPanel({userOptions}) {
       </div>
 
       {/* Progress Bar */}
-      <div className="sticky top-5 bg-card flex flex-col gap-3 rounded-lg border border-border p-4 shadow-sm">
+      <div className="z-10 sticky top-5 lg:top-[-32] bg-card flex flex-col gap-3 rounded-lg border border-border p-4 shadow-sm">
         <div className="flex items-center justify-between">
           <span className="text-md text-muted-foreground">
             Form completion
@@ -37,15 +39,10 @@ export default function PatientPanel({userOptions}) {
       </div>
 
       {/* Personal Information */}
-      <section className="flex flex-col gap-6">
-        <div className="flex items-center gap-2 border-b border-border pb-4">
-          <User className="w-4 h-4 text-accent" />
-          <h2 className="text-lg font-bold text-foreground">
-            Personal Information
-          </h2>
-        </div>
+      <section className={sectionStyle}>
+        <SectionHeader icon={User} title="Personal Information" />
         {/* First & Middle Name */}
-        <div className="flex gap-4">
+        <div className="flex flex-col gap-6 md:flex-row md:gap-4">
           <div className="flex flex-col flex-1 gap-2">
             <label htmlFor="firstName" className="font-semibold text-foreground">
               First Name <span className="text-red-500">*</span>
@@ -56,6 +53,7 @@ export default function PatientPanel({userOptions}) {
               name="firstName"
               placeholder="e.g. Abhijit"
               className={inputStyles} spellCheck={false}
+              required
             />
           </div>
           <div className="flex flex-col flex-1 gap-2">
@@ -82,10 +80,11 @@ export default function PatientPanel({userOptions}) {
             name="lastName"
             placeholder="e.g. Ghosh"
             className={inputStyles} spellCheck={false}
+            required
           />
         </div>
         {/* DOB & Gender */}
-        <div className="flex gap-4">
+        <div className="flex flex-col gap-6 md:flex-row md:gap-4">
           <div className="flex flex-col flex-1 gap-2">
             <label htmlFor="dob" className="font-semibold text-foreground">
               Date of Birth <span className="text-red-500">*</span>
@@ -95,6 +94,7 @@ export default function PatientPanel({userOptions}) {
               type="date"
               name="dob"
               className={inputStyles}
+              required
             />
           </div>
           <div className="flex flex-col flex-1 gap-2">
@@ -105,6 +105,7 @@ export default function PatientPanel({userOptions}) {
               id="gender"
               name="gender"
               className={inputStyles}
+              required
             >
               <option value="">Select...</option>
               {userOptions.genders.map((gender) => (
@@ -117,17 +118,12 @@ export default function PatientPanel({userOptions}) {
         </div>
       </section>
 
-      {/* Contact Details */}
-      <section className="flex flex-col gap-6">
-        <div className="flex items-center gap-2 border-b border-border pb-4">
-          <Phone className="w-4 h-4 text-accent" />
-          <h2 className="text-lg font-bold text-foreground">
-            Contact Details
-          </h2>
-        </div>
+      {/* Contact Information */}
+      <section className={sectionStyle}>
+        <SectionHeader icon={Phone} title="Contact Information" />
         {/* Phone Number */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="patienNumber" className="font-semibold text-foreground">
+          <label htmlFor="patientNumber" className="font-semibold text-foreground">
             Phone Number <span className="text-red-500">*</span>
           </label>
           <input
@@ -136,6 +132,7 @@ export default function PatientPanel({userOptions}) {
             name="phoneNumber"
             placeholder="e.g. +66 00 000 0000"
             className={inputStyles} spellCheck={false}
+            required
           />
         </div>
         {/* Email */}
@@ -162,20 +159,16 @@ export default function PatientPanel({userOptions}) {
             rows="4"
             placeholder="Street address, city, state, ZIP code"
             className={inputStyles} spellCheck={false}
+            required
           />
         </div>
       </section>
 
       {/* Additional Information */}
-      <section className="flex flex-col gap-6">
-        <div className="flex items-center gap-2 border-b border-border pb-4">
-          <Globe className="w-4 h-4 text-accent" />
-          <h2 className="text-lg font-bold text-foreground">
-            Additional Information
-          </h2>
-        </div>
+      <section className={sectionStyle}>
+        <SectionHeader icon={Globe} title="Additional Information" />
         {/* Preferred Language & Nationality */}
-        <div className="flex gap-4">
+        <div className="flex flex-col gap-6 md:flex-row md:gap-4">
           <div className="flex flex-col flex-1 gap-2">
             <label htmlFor="language" className="font-semibold text-foreground">
               Preferred Language <span className="text-red-500">*</span>
@@ -184,6 +177,7 @@ export default function PatientPanel({userOptions}) {
               id="language"
               name="preferredLanguage"
               className={inputStyles}
+              required
             >
               <option value="">Select...</option>
               {userOptions.languages.map((language) => (
@@ -201,6 +195,7 @@ export default function PatientPanel({userOptions}) {
               id="nationality"
               name="nationality"
               className={inputStyles}
+              required
             >
               <option value="">Select...</option>
               {userOptions.nationalities.map((nationality) => (
@@ -231,15 +226,8 @@ export default function PatientPanel({userOptions}) {
         </div>
       </section>
       {/* Emergency Contact */}
-      <section className="flex flex-col gap-6">
-        <div className="flex items-center justify-between border-b border-border pb-4">
-          <div className="flex items-center gap-2">
-            <Heart className="w-4 h-4 text-accent" />
-            <h2 className="text-lg font-bold text-foreground">
-              Emergency Contact
-            </h2>
-          </div>
-        </div>
+      <section className={sectionStyle}>
+        <SectionHeader icon={Heart} title="Emergency Contact" />
         {/* Emergency Contact Number */}
         <div className="flex flex-col gap-2">
           <label htmlFor="emergencyNumber" className="font-semibold text-foreground">
@@ -251,10 +239,11 @@ export default function PatientPanel({userOptions}) {
             name="emergencyContactNumber"
             placeholder="e.g. +66 11 222 3333"
             className={inputStyles} spellCheck={false}
+            required
           />
         </div>
         {/* Contact Name & Relationship */}
-        <div className="flex gap-4">
+        <div className="flex flex-col gap-6 md:flex-row md:gap-4">
           <div className="flex flex-col flex-1 gap-2">
             <label htmlFor="emergencyName" className="font-semibold text-foreground">
               Contact Name
