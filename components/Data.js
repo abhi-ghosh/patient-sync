@@ -46,7 +46,7 @@ const userOptions = {
   ]
 };
 
-const defaultPatientState = {
+const defaultFormData = {
   firstName: "",
   middleName: "",
   lastName: "",
@@ -60,17 +60,25 @@ const defaultPatientState = {
   religion: "",
   emergencyNumber: "",
   emergencyName: "",
-  emergencyRelationship: ""
-}
+  emergencyRelationship: "",
+};
+
+const defaultPatientState = {
+  ...defaultFormData,
+  submitted: false,
+};
+
 const defaultStaffState = {
-  formData: defaultPatientState,
+  formData: defaultFormData,
   status: "inactive",
   lastActivity: null,
   activeField: null,
   errors: {},
   completionPct: 0,
+  submitted: false,
   submittedAt: null,
 };
+
 const personalFields = [
   {key: "firstName", label: "FIRST NAME"},
   {key: "middleName", label: "MIDDLE NAME"},
@@ -98,4 +106,4 @@ const emergencyFields = [
 ];
 const allFields = [...personalFields, ...contactFields, ...additionalFields, ...emergencyFields];
 const requiredFields = ["firstName", "lastName", "dob", "gender", "patientNumber", "address", "language", "nationality", "emergencyNumber"];
-export { userOptions, defaultPatientState, defaultStaffState, personalFields, contactFields, additionalFields, emergencyFields, requiredFields, allFields };
+export { userOptions, defaultFormData, defaultPatientState, defaultStaffState, personalFields, contactFields, additionalFields, emergencyFields, requiredFields, allFields };
