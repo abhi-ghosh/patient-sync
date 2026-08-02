@@ -65,14 +65,6 @@ Shows the Staff Monitor updating instantly as the patient fills out the registra
 
 ---
 
-## Staff Monitoring Dashboard
-
-Displays synchronized patient information, validation state, completion progress and activity status.
-
-![Realtime Tracking 2](./assets/realtimetracking2.webp)
-
----
-
 ## Live Statistics
 
 Live counters displaying required fields, validation errors and optional field completion.
