@@ -216,7 +216,7 @@ export default function Home() {
         <PatientPanel userOptions={userOptions} patientPanelData={patientPanelData}
           formInputHandler={formInputHandler} completionPct={completionPct}
           formFocusHandler={formFocusHandler} formBlurHandler={formBlurHandler} errors={errors}
-          touched={touched} handleSubmit={handleSubmit} resetForm={resetForm}/>
+          touched={touched} handleSubmit={handleSubmit} resetForm={resetForm} isFormValid={isFormValid}/>
         <StaffPanel staffPanelData={staffPanelData}/>
       </MainContent>
     </main>

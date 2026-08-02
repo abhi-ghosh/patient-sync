@@ -2,7 +2,7 @@ import { User,Phone, Heart, Globe } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 import SubmissionSuccess from "@/components/SubmissionSuccess";
 export default function PatientPanel({userOptions, patientPanelData, formInputHandler,
-  completionPct, formFocusHandler, formBlurHandler, errors, touched,handleSubmit,resetForm}) {
+  completionPct, formFocusHandler, formBlurHandler, errors, touched,handleSubmit,resetForm, isFormValid}) {
 
   //Today's Date
   const today = new Date().toISOString().split("T")[0];
@@ -366,8 +366,13 @@ export default function PatientPanel({userOptions, patientPanelData, formInputHa
         <div className=" pt-6">
           <button
             type="submit"
-            className="cursor-pointer w-full rounded-xl bg-primary py-4 text-lg font-bold text-primary-foreground
-            transition-all duration-200 hover:brightness-110 active:scale-[0.98]"
+            className={`w-full rounded-xl py-4 text-lg font-bold transition-all duration-200
+              ${
+                isFormValid
+                  ? "cursor-pointer bg-primary text-primary-foreground hover:brightness-110 active:scale-[0.98]"
+                  : "cursor-not-allowed bg-muted text-muted-foreground opacity-60"
+              }`}
+            disabled={!isFormValid}
           >
             Register Patient
           </button>
