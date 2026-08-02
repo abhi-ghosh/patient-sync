@@ -1,6 +1,6 @@
 import { User,Phone, Heart, Globe } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
-export default function PatientPanel({userOptions}) {
+export default function PatientPanel({userOptions, patientPanelData, formInputHandler, completionPct, formFocusHandler, formBlurHandler}) {
 
   //Reusable Input Form Styles
   const inputStyles = "w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-ring";
@@ -27,11 +27,11 @@ export default function PatientPanel({userOptions}) {
             Form completion
           </span>
           <span className="text-lg text-foreground font-bold">
-            {0}%
+            {completionPct}%
           </span>
         </div>
         <div className="h-3 rounded-full bg-muted">
-          <div className="h-full w-0 rounded-full bg-accent" />
+          <div className={`h-full rounded-full bg-accent`} style={{ width: `${completionPct}%`, transition: "width 0.2s ease" }} />
         </div>
         <p className="text-md text-muted-foreground">
           0 of 8 required fields complete
@@ -51,9 +51,13 @@ export default function PatientPanel({userOptions}) {
               id="firstName"
               type="text"
               name="firstName"
+              value={patientPanelData.firstName}
+              onChange={formInputHandler}
               placeholder="e.g. Abhijit"
               className={inputStyles} spellCheck={false}
               required
+              onFocus={() => formFocusHandler("firstName")}
+              onBlur={() => formBlurHandler()}
             />
           </div>
           <div className="flex flex-col flex-1 gap-2">
@@ -64,8 +68,12 @@ export default function PatientPanel({userOptions}) {
               id="middleName"
               type="text"
               name="middleName"
+              value={patientPanelData.middleName}
+              onChange={formInputHandler}
               placeholder="Optional"
               className={inputStyles} spellCheck={false}
+              onFocus={() => formFocusHandler("middleName")}
+              onBlur={() => formBlurHandler()}
             />
           </div>
         </div>
@@ -78,9 +86,13 @@ export default function PatientPanel({userOptions}) {
             id="lastName"
             type="text"
             name="lastName"
+            value={patientPanelData.lastName}
+            onChange={formInputHandler}
             placeholder="e.g. Ghosh"
             className={inputStyles} spellCheck={false}
             required
+            onFocus={() => formFocusHandler("lastName")}
+            onBlur={() => formBlurHandler()}
           />
         </div>
         {/* DOB & Gender */}
@@ -94,6 +106,10 @@ export default function PatientPanel({userOptions}) {
               type="date"
               name="dob"
               className={inputStyles}
+              value={patientPanelData.dob}
+              onChange={formInputHandler}
+              onFocus={() => formFocusHandler("dob")}
+              onBlur={() => formBlurHandler()}
               required
             />
           </div>
@@ -105,6 +121,10 @@ export default function PatientPanel({userOptions}) {
               id="gender"
               name="gender"
               className={inputStyles}
+              value={patientPanelData.gender}
+              onChange={formInputHandler}
+              onFocus={() => formFocusHandler("gender")}
+              onBlur={() => formBlurHandler()}
               required
             >
               <option value="">Select...</option>
@@ -129,9 +149,13 @@ export default function PatientPanel({userOptions}) {
           <input
             id="patientNumber"
             type="tel"
-            name="phoneNumber"
+            name="patientNumber"
             placeholder="e.g. +66 00 000 0000"
             className={inputStyles} spellCheck={false}
+            value={patientPanelData.patientNumber}
+            onChange={formInputHandler}
+            onFocus={() => formFocusHandler("patientNumber")}
+            onBlur={() => formBlurHandler()}
             required
           />
         </div>
@@ -144,8 +168,12 @@ export default function PatientPanel({userOptions}) {
             id="email"
             type="email"
             name="email"
+            value={patientPanelData.email}
+            onChange={formInputHandler}
             placeholder="e.g. name@example.com"
             className={inputStyles} spellCheck={false}
+            onFocus={() => formFocusHandler("email")}
+            onBlur={() => formBlurHandler()}
           />
         </div>
         {/* Address */}
@@ -159,6 +187,10 @@ export default function PatientPanel({userOptions}) {
             rows="4"
             placeholder="Street address, city, state, ZIP code"
             className={inputStyles} spellCheck={false}
+            value={patientPanelData.address}
+            onChange={formInputHandler}
+            onFocus={() => formFocusHandler("address")}
+            onBlur={() => formBlurHandler()}
             required
           />
         </div>
@@ -175,9 +207,13 @@ export default function PatientPanel({userOptions}) {
             </label>
             <select
               id="language"
-              name="preferredLanguage"
+              name="language"
               className={inputStyles}
               required
+              value={patientPanelData.language}
+              onChange={formInputHandler}
+              onFocus={() => formFocusHandler("language")}
+              onBlur={() => formBlurHandler()}
             >
               <option value="">Select...</option>
               {userOptions.languages.map((language) => (
@@ -196,6 +232,10 @@ export default function PatientPanel({userOptions}) {
               name="nationality"
               className={inputStyles}
               required
+              value={patientPanelData.nationality}
+              onChange={formInputHandler}
+              onFocus={() => formFocusHandler("nationality")}
+              onBlur={() => formBlurHandler()}
             >
               <option value="">Select...</option>
               {userOptions.nationalities.map((nationality) => (
@@ -215,6 +255,10 @@ export default function PatientPanel({userOptions}) {
             id="religion"
             name="religion"
             className={inputStyles}
+            value={patientPanelData.religion}
+            onChange={formInputHandler}
+            onFocus={() => formFocusHandler("religion")}
+            onBlur={() => formBlurHandler()}
           >
             <option value="">Select...</option>
             {userOptions.religions.map((religion) => (
@@ -236,10 +280,14 @@ export default function PatientPanel({userOptions}) {
           <input
             id="emergencyNumber"
             type="tel"
-            name="emergencyContactNumber"
+            name="emergencyNumber"
             placeholder="e.g. +66 11 222 3333"
             className={inputStyles} spellCheck={false}
             required
+            value={patientPanelData.emergencyNumber}
+            onChange={formInputHandler}
+            onFocus={() => formFocusHandler("emergencyNumber")}
+            onBlur={() => formBlurHandler()}
           />
         </div>
         {/* Contact Name & Relationship */}
@@ -251,9 +299,13 @@ export default function PatientPanel({userOptions}) {
             <input
               id="emergencyName"
               type="text"
-              name="emergencyContactName"
+              name="emergencyName"
               placeholder="e.g. Jill Valentine"
               className={inputStyles} spellCheck={false}
+              value={patientPanelData.emergencyName}
+              onChange={formInputHandler}
+              onFocus={() => formFocusHandler("emergencyName")}
+              onBlur={() => formBlurHandler()}
             />
           </div>
           <div className="flex flex-col flex-1 gap-2">
@@ -266,6 +318,10 @@ export default function PatientPanel({userOptions}) {
               name="emergencyRelationship"
               placeholder="e.g. Parent"
               className={inputStyles}
+              value={patientPanelData.emergencyRelationship}
+              onChange={formInputHandler}
+              onFocus={() => formFocusHandler("emergencyRelationship")}
+              onBlur={() => formBlurHandler()}
             />
           </div>
         </div>
@@ -275,7 +331,7 @@ export default function PatientPanel({userOptions}) {
       <div className="border-t border-border pt-6">
         <button
           type="submit"
-          className="w-full rounded-xl bg-primary py-4 text-lg font-bold text-primary-foreground
+          className="cursor-pointer w-full rounded-xl bg-primary py-4 text-lg font-bold text-primary-foreground
           transition-all duration-200 hover:brightness-110 active:scale-[0.98]"
         >
           Register Patient

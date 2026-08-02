@@ -1,12 +1,55 @@
+"use client";
+import { useState, useEffect} from "react";
 import InfoCard from "@/components/InfoCard";
+import {personalFields, contactFields, additionalFields, emergencyFields, requiredFields, allFields} from "@/components/Data";
 import {User, Activity, Phone, Globe, Heart} from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 import TypeAnimation from "@/components/TypeAnimation";
 import StatCard from "@/components/StatCard";
-import { useState } from "react";
-export default function StaffPanel() {
-  const active = false;
-  const inactive = !false;
+export default function StaffPanel({staffPanelData}) {
+
+  // Current timestamp
+  const [now, setNow] = useState(() => Date.now());
+  // Refresh the current time every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(Date.now());
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  //Calculate patient inactivity
+  const secondsAgo = staffPanelData.lastActivity
+    ? Math.floor((now - staffPanelData.lastActivity) / 1000)
+    : 0;
+  //secondsAgo rounded to the nearest 5 so it displays in 5s increments
+  const roundedSeconds = Math.floor(secondsAgo / 5) * 5;
+  //Inactivity message
+  let activityMessage= "";
+  if (secondsAgo < 5) {
+    activityMessage = "Just now";
+  } else if (secondsAgo < 30) {
+    activityMessage = `${roundedSeconds} seconds ago`;
+  } else {
+    activityMessage = "30+ seconds ago";
+  }
+
+  //Default state when no activity
+  const notStarted = staffPanelData.lastActivity === null;
+  //Active state when onFocus triggers
+  const active =
+    !notStarted &&
+    secondsAgo < 30;
+  //Inactive state when no activity for 30 seconds
+  const inactive =
+    !notStarted &&
+    secondsAgo >= 30;
+
+  //Which field is active & it's data
+  const activeField = allFields.find(
+    field => field.key === staffPanelData.activeField
+  );
+
   const inputError = false;
   const success = false;
   const infoGroupStyle = "grid grid-cols-1 md:grid-cols-2 gap-4";
@@ -47,66 +90,91 @@ export default function StaffPanel() {
             </div>
           </div>
           <span className="flex flex-col items-center text-lg text-foreground font-bold">
-            {0}%
+            {staffPanelData.completionPct}%
             <p className="text-sm">Complete</p>
           </span>
         </div>
         {/* Progress Bar */}
         <div className="h-3 rounded-full bg-muted">
-          <div className="h-full w-0 rounded-full bg-accent" />
+          <div className={`h-full rounded-full bg-accent`} style={{ width: `${staffPanelData.completionPct}%`, transition: "width 0.2s ease" }} />
         </div>
-        <p className="text-xs text-muted-foreground">Last activity: just now</p>
-      </div>
-      {/* Currently Entering Field */}
-      <div className="flex items-center gap-2 text-sm text-accent">
-        <Activity className="w-4 h-4"/>
-        <p>Entering: <span className="font-bold">{"Last Name"}</span></p>
-        <TypeAnimation/>
+        {(active || inactive) && (<p className="text-xs text-muted-foreground">{`Last Activity: ${activityMessage}`}</p>)}
+        {/* Currently Entering Field */}
+        {active && <div className={`flex items-center gap-2 text-sm text-accent ${activeField ? "" : "hidden"}`}>
+          <Activity className="w-4 h-4"/>
+          <p>Entering: <span className="font-bold">
+            {activeField?.label}</span>
+          </p>
+          <TypeAnimation/>
+        </div>}
       </div>
       {/* Info Cards */}
       {/* Personal Information */}
       <section className={sectionStyle}>
         <SectionHeader icon={User} title="Personal Information" />
         <div className={infoGroupStyle}>
-          <InfoCard label="First Name" value="John" active={active} inputError={inputError} success={success} required/>
-          <InfoCard label="Middle Name" value="" active={active} inputError={inputError} success={success}/>
-          <InfoCard label="Last Name" value="Doe" active={active} inputError={inputError} success={success} required/>
-          <InfoCard label="Date of Birth" value="01/01/1990" active={active} inputError={inputError} success={success} required/>
-          <InfoCard label="Gender" value="Male" active={active} inputError={inputError} success={success} required/>
+          {personalFields.map((field, index) => (
+            <InfoCard
+              key={index}
+              label={field.label}
+              value={staffPanelData.formData[field.key]}
+              required={requiredFields.includes(field.key)}
+              focused={activeField?.key === field.key}
+            />
+          ))}
         </div>
       </section>
       {/* Contact Information */}
       <section className={sectionStyle}>
         <SectionHeader icon={Phone} title="Contact Information" />
         <div className={infoGroupStyle}>
-          <InfoCard label="Phone Number" value="" active={active} inputError={inputError} success={success} required/>
-          <InfoCard label="Email Address" value="john.doe@example.com" active={active} inputError={inputError} success={success}/>
-          <InfoCard className="md:col-span-2" label="Address" value="" active={active} inputError={inputError} success={success} required/>
+          {contactFields.map((field, index) => (
+            <InfoCard
+              key={index}
+              label={field.label}
+              value={staffPanelData.formData[field.key]}
+              required={requiredFields.includes(field.key)}
+              focused={activeField?.key === field.key}
+            />
+          ))}
         </div>
       </section>
       {/* Additional Information */}
       <section className={sectionStyle}>
         <SectionHeader icon={Globe} title="Additional Information" />
         <div className={infoGroupStyle}>
-          <InfoCard label="Preferred Language" value="Thai" active={active} inputError={inputError} success={success} required/>
-          <InfoCard label="Nationality" value="Thai" active={active} inputError={inputError} success={success} required/>
-          <InfoCard label="Religion" value="" active={active} inputError={inputError} success={success}/>
+          {additionalFields.map((field, index) => (
+            <InfoCard
+              key={index}
+              label={field.label}
+              value={staffPanelData.formData[field.key]}
+              required={requiredFields.includes(field.key)}
+              focused={activeField?.key === field.key}
+            />
+          ))}
+          <InfoCard label="Religion" value={staffPanelData.formData.religion} active={active} inputError={inputError} success={success}/>
         </div>
       </section>
       {/* Emergency Contact */}
       <section className={sectionStyle}>
         <SectionHeader icon={Heart} title="Emergency Contact" />
         <div className={infoGroupStyle}>
-          <InfoCard label="Emergency Contact Number" value="" active={active} className={"md:col-span-2"} inputError={inputError} success={success} required/>
-          <InfoCard label="Emergency Contact Name" value="" active={active} inputError={inputError} success={success}/>
-          <InfoCard label="Emergency Contact Relationship" value="" active={active} inputError={inputError} success={success}/>
+          {emergencyFields.map((field, index) => (
+            <InfoCard
+              key={index}
+              label={field.label}
+              value={staffPanelData.formData[field.key]}
+              required={requiredFields.includes(field.key)}
+              focused={activeField?.key === field.key}
+            />
+          ))}
         </div>
       </section>
       {/* Statistics */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         <StatCard
-          current={0}
-          total={8}
+          current={requiredFields.filter((field) => staffPanelData.formData[field]).length}
+          total={requiredFields.length}
           label="Required fields"
         />
         <StatCard
@@ -114,8 +182,16 @@ export default function StaffPanel() {
           label="Validation errors"
         />
         <StatCard
-          current={0}
-          total={6}
+         //Extract fields that are not in requiredFields and has a truthy value
+          current={
+            Object.keys(staffPanelData.formData)
+              .filter(
+                (field) =>
+                  !requiredFields.includes(field) &&
+                  staffPanelData.formData[field]
+              ).length
+            }
+          total={Object.keys(staffPanelData.formData).length - requiredFields.length}
           label="Optional fields"
         />
       </div>

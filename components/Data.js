@@ -46,4 +46,56 @@ const userOptions = {
   ]
 };
 
-export default userOptions;
+const defaultPatientState = {
+  firstName: "",
+  middleName: "",
+  lastName: "",
+  dob: "",
+  gender: "",
+  patientNumber: "",
+  email: "",
+  address: "",
+  language: "",
+  nationality: "",
+  religion: "",
+  emergencyNumber: "",
+  emergencyName: "",
+  emergencyRelationship: ""
+}
+const defaultStaffState = {
+  formData: defaultPatientState,
+  status: "inactive",
+  lastActivity: null,
+  activeField: null,
+  errors: {},
+  completionPct: 0,
+  submittedAt: null,
+};
+const personalFields = [
+  {key: "firstName", label: "FIRST NAME"},
+  {key: "middleName", label: "MIDDLE NAME"},
+  {key: "lastName", label: "LAST NAME"},
+  {key: "dob", label: "DATE OF BIRTH"},
+  {key: "gender", label: "GENDER"}
+];
+
+const contactFields = [
+  {key: "patientNumber", label: "PATIENT NUMBER"},
+  {key: "email", label: "EMAIL ADDRESS"},
+  {key: "address", label: "ADDRESS"},
+];
+
+const additionalFields = [
+  {key: "language", label: "PREFERRED LANGUAGE"},
+  {key: "nationality", label: "NATIONALITY"},
+  {key: "religion", label: "RELIGION"},
+];
+
+const emergencyFields = [
+  {key: "emergencyNumber", label: "EMERGENCY CONTACT NUMBER"},
+  {key: "emergencyName", label: "EMERGENCY CONTACT NAME"},
+  {key: "emergencyRelationship", label: "EMERGENCY CONTACT RELATIONSHIP"},
+];
+const allFields = [...personalFields, ...contactFields, ...additionalFields, ...emergencyFields];
+const requiredFields = ["firstName", "lastName", "dob", "gender", "patientNumber", "address", "language", "nationality", "emergencyNumber"];
+export { userOptions, defaultPatientState, defaultStaffState, personalFields, contactFields, additionalFields, emergencyFields, requiredFields, allFields };
