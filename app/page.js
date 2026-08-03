@@ -52,7 +52,7 @@ export default function Home() {
   //WebSocket connection
   const socket = useRef(null);
   useEffect(() => {
-  socket.current = new WebSocket("ws://localhost:8080");
+  socket.current = new WebSocket(process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8080");
   socket.current.onopen = () => {
     console.log("Connected to WebSocket server");
     };
