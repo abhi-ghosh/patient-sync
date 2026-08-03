@@ -10,7 +10,7 @@ Patient Sync simulates a digital hospital registration workflow where a patient 
 
 **Vercel Deployment**
 
-https://patient-sync-jh74xh4sh-abhi-ghoshs-projects.vercel.app
+https://patient-sync-tan.vercel.app/
 
 ---
 
