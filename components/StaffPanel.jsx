@@ -65,8 +65,6 @@ export default function StaffPanel({staffPanelData}) {
     field => field.key === staffPanelData.activeField
   );
 
-  const inputError = false;
-  const success = false;
   const infoGroupStyle = "grid grid-cols-1 md:grid-cols-2 gap-4";
   const sectionStyle = "flex flex-col gap-6";
   return (

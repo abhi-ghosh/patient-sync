@@ -17,6 +17,7 @@ https://patient-sync-tan.vercel.app/
 # ✨ Key Features
 
 - 🔄 Real-time synchronization using WebSockets
+- ⏳ Connection modal with elapsed-time feedback
 - 🩺 Live Staff Monitor dashboard
 - 📝 Patient registration form
 - ✅ Real-time field validation
@@ -93,6 +94,7 @@ Live counters displaying required fields, validation errors and optional field c
 - Git
 - GitHub
 - Vercel
+- Render.com
 - VS Code
 
 ---
@@ -140,7 +142,7 @@ Open a second terminal and navigate to the server location.
 Run:
 
 ```bash
-node server.js
+node server.mjs
 ```
 
 The server starts on:
@@ -174,7 +176,8 @@ patient-sync
 │   ├── SectionHeader.jsx
 │   ├── ProgressBar.jsx
 │   ├── SubmissionSuccess.jsx
-│   └── TypeAnimation.jsx
+│   ├── TypeAnimation.jsx
+│   └── ConnectionModal.jsx
 │
 ├── assets/
 │
@@ -194,6 +197,8 @@ The application was designed to resemble a modern hospital registration interfac
 
 ### Responsive Layout
 
+- A polished modal blurs the UI, locks scrolling, and shows time elapsed while server connects.
+- Upon successful connection, the modal disappears and the UI becomes accessible.
 - Desktop displays the Patient Registration form and Staff Monitor side by side.
 - Mobile devices display one panel at a time for improved usability.
 - Consistent spacing and typography improve readability across all screen sizes.
@@ -227,6 +232,7 @@ The application is composed of reusable React components, each with a single res
 
 | Component         | Responsibility                                    |
 | ----------------- | ------------------------------------------------- |
+| ConnectionModal   | Displays connection status and loading feedback   |
 | PatientPanel      | Registration form, validation and submission      |
 | StaffPanel        | Displays synchronized patient information         |
 | Navbar            | Branding and theme toggle                         |
@@ -281,16 +287,17 @@ This provides staff with a live view of the registration process as it happens.
 
 # 🎯 Application Workflow
 
-1. The patient begins filling out the registration form.
-2. Input is validated in real time.
-3. Every update is transmitted through WebSockets.
-4. The Staff Monitor instantly reflects:
+1. The patient waits for the server connection with feedback from the modal.
+2. The patient begins filling out the registration form.
+3. Input is validated in real time.
+4. Every update is transmitted through WebSockets.
+5. The Staff Monitor instantly reflects:
    - Current field being edited
    - Updated patient information
    - Validation errors
    - Completion percentage
    - Activity status
-5. After successful submission:
+6. After successful submission:
    - The patient sees a registration success screen.
    - The Staff Monitor switches to Submitted mode.
    - The submission time is displayed.
@@ -309,11 +316,25 @@ Building Patient Sync strengthened my understanding of:
 - Responsive interface design
 - Real-time WebSocket communication
 - Synchronizing application state across multiple clients
+- Deploying projects from GitHub with Vercel
+- Creating a backend with Render and connecting it to Vercel
+
+---
+
+# 🛠️ Problems I Ran Into & How I Fixed Them
+
+- **Local → Production:** Patient Sync worked perfectly locally, but deploying the frontend to **Vercel** and the WebSocket server to **Render** exposed connection delays that I didn't encounter during development.
+
+- **Cold starts:** Render could take time to wake the WebSocket server, making the deployed frontend appear unresponsive while waiting for the connection.
+
+- **Connection UX:** Instead of leaving users staring at a frozen application, I added a connection modal with an elapsed-time counter, background dimming/blur, and scroll locking.
+
+- **WebSocket lifecycle:** Added connection and cleanup handling to properly start and close the socket, stop the connection timer, and prevent stale processes.
+
+- **The takeaway:** The project taught me that deploying an application isn't just putting it online — production needs to account for **server availability, connection failures, loading states, and user feedback**.
 
 ---
 
 # 👨‍💻 Author
 
 **Abhijit Ghosh**
-
-GitHub: https://github.com/abhi-ghosh

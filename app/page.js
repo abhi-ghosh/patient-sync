@@ -4,9 +4,9 @@ import Navbar from "@/components/Navbar";
 import MainContent from "@/components/MainContent";
 import StaffPanel from "@/components/StaffPanel";
 import PatientPanel from "@/components/PatientPanel";
+import ConnectionModal from "@/components/ConnectionModal";
 import {userOptions, defaultPatientState, defaultStaffState, requiredFields} from "@/components/Data";
 export default function Home() {
-
   //PatientPanel data
   const [patientPanelData, setPatientPanelData] = useState(defaultPatientState);
 
@@ -49,12 +49,24 @@ export default function Home() {
     return "";
   }
 
+  //WebSocket connection UI feedback state
+  const [isConnected, setIsConnected] = useState(false);
+
+  //Socket second timer state
+  const [seconds, setSeconds] = useState(0);
   //WebSocket connection
   const socket = useRef(null);
   useEffect(() => {
   socket.current = new WebSocket(process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8080");
+  //Time elapsed before the socket connection is considered successful
+  const timer = setInterval(() => {
+    setSeconds(prev => prev + 1);
+  }, 1000);
   socket.current.onopen = () => {
     console.log("Connected to WebSocket server");
+    setIsConnected(true);
+    clearInterval(timer);
+    setSeconds(0);
     };
 
   //Handle incoming messages from the server
@@ -68,6 +80,7 @@ export default function Home() {
 
     return () => {
       socket.current.close();
+      clearInterval(timer);
     };
   }, []);
 
@@ -138,6 +151,18 @@ export default function Home() {
       return updatedValue;
     })
   }
+
+  //Preventing the page from scrolling when the modal is open
+  useEffect(() => {
+  if (!isConnected) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, [isConnected]);
 
   //Focus Handler for synced form fields when an input is in focus
   const formFocusHandler = (fieldName) => {
@@ -210,15 +235,16 @@ export default function Home() {
     }
   };
   return (
-    <main className="bg-card min-h-screen">
-      <Navbar changeTheme={changeTheme} darkMode={darkMode}/>
-      <MainContent whichForm={whichForm} setWhichForm={setWhichForm}>
-        <PatientPanel userOptions={userOptions} patientPanelData={patientPanelData}
-          formInputHandler={formInputHandler} completionPct={completionPct}
-          formFocusHandler={formFocusHandler} formBlurHandler={formBlurHandler} errors={errors}
-          touched={touched} handleSubmit={handleSubmit} resetForm={resetForm} isFormValid={isFormValid}/>
-        <StaffPanel staffPanelData={staffPanelData}/>
-      </MainContent>
+    <main className="bg-card min-h-screen relative">
+      {!isConnected && <ConnectionModal seconds={seconds}/>}
+        <Navbar changeTheme={changeTheme} darkMode={darkMode}/>
+        <MainContent whichForm={whichForm} setWhichForm={setWhichForm}>
+          <PatientPanel userOptions={userOptions} patientPanelData={patientPanelData}
+            formInputHandler={formInputHandler} completionPct={completionPct}
+            formFocusHandler={formFocusHandler} formBlurHandler={formBlurHandler} errors={errors}
+            touched={touched} handleSubmit={handleSubmit} resetForm={resetForm} isFormValid={isFormValid}/>
+          <StaffPanel staffPanelData={staffPanelData}/>
+        </MainContent>
     </main>
   );
 }
