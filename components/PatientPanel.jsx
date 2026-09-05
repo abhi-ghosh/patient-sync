@@ -1,8 +1,9 @@
 import { User,Phone, Heart, Globe } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 import SubmissionSuccess from "@/components/SubmissionSuccess";
-export default function PatientPanel({userOptions, patientPanelData, formInputHandler,
-  completionPct, formFocusHandler, formBlurHandler, errors, touched,handleSubmit,resetForm, isFormValid}) {
+import ProgressBar from "@/components/ProgressBar";
+export default function PatientPanel({userOptions, patientPanelData, formInputHandler, doneReqFields, totalReqFields,
+  completionPct, formFocusHandler, formBlurHandler, errors, touched, handleSubmit, resetForm, isFormValid}) {
 
   //Today's Date
   const today = new Date().toISOString().split("T")[0];
@@ -33,7 +34,7 @@ export default function PatientPanel({userOptions, patientPanelData, formInputHa
 
   return (
     <div className="flex flex-col gap-10">
-      {/* Header */}
+      {/*//* Header */}
       <div className="text-foreground flex gap-1 flex-col">
         <h1 className="flex items-center gap-2 text-xl font-bold">
           <div className="bg-secondary p-2 rounded-lg items-center justify-center border border-accent">
@@ -44,8 +45,8 @@ export default function PatientPanel({userOptions, patientPanelData, formInputHa
         <p className="text-sm text-muted-foreground">Fields marked <span className="text-red-500">*</span> are required</p>
       </div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-10">
-         {/* Progress Bar */}
-        <div className="z-10 sticky top-5 lg:top-[-32] bg-card flex flex-col gap-3 rounded-lg border border-border p-4 shadow-sm">
+         {/*//* Progress Bar */}
+        <div className="z-10 sticky top-5 lg:-top-8 bg-card flex flex-col gap-3 rounded-lg border border-border p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-md text-muted-foreground">
               Form completion
@@ -54,15 +55,14 @@ export default function PatientPanel({userOptions, patientPanelData, formInputHa
               {completionPct}%
             </span>
           </div>
-          <div className="h-3 rounded-full bg-muted">
-            <div className={`h-full rounded-full bg-accent`} style={{ width: `${completionPct}%`, transition: "width 0.2s ease" }} />
-          </div>
+          <ProgressBar completionPct = {completionPct} />
+          {/*//* Required Fields */}
           <p className="text-md text-muted-foreground">
-            0 of 8 required fields complete
+            {doneReqFields} of {totalReqFields} required fields complete
           </p>
         </div>
 
-      {/* Personal Information */}
+      {/* //* Personal Information */}
         <section className={sectionStyle}>
           <SectionHeader icon={User} title="Personal Information" />
           {/* First & Middle Name */}

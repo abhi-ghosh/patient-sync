@@ -6,9 +6,38 @@ import {User, Activity, Phone, Globe, Heart} from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 import TypeAnimation from "@/components/TypeAnimation";
 import StatCard from "@/components/StatCard";
+import ProgressBar from "@/components/ProgressBar";
 export default function StaffPanel({staffPanelData}) {
 
-  //Reusable InfoCard Props
+  //* Statistics Array
+  const stats = [
+    {
+      label: "Required fields",
+      current: requiredFields.filter((field) => staffPanelData.formData[field]).length,
+      total: requiredFields.length,
+      id: "required"
+    },
+    {
+      label: "Validation errors",
+      current: Object.keys(staffPanelData.errors).length,
+      id: "errors"
+    },
+    {
+      label: "Optional fields",
+      current: Object.keys(staffPanelData.formData)
+              .filter(
+                (field) =>
+                  field !== "submitted" &&
+                  !requiredFields.includes(field) &&
+                  staffPanelData.formData[field]
+              ).length,
+      total: Object.keys(staffPanelData.formData)
+              .filter((field) => field !== "submitted").length - requiredFields.length,
+      id: "optional"
+    }
+  ];
+
+  //* Reusable InfoCard Props
   const getInfoCardProps = (field) => ({
     label: field.label,
     value: staffPanelData.formData[field.key],
@@ -21,9 +50,10 @@ export default function StaffPanel({staffPanelData}) {
     errorMessage: staffPanelData.errors[field.key],
   });
 
-  // Current timestamp
+  //* Current timestamp
   const [now, setNow] = useState(() => Date.now());
-  // Refresh the current time every 5 seconds
+
+  //* Refresh the current time every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setNow(Date.now());
@@ -31,13 +61,15 @@ export default function StaffPanel({staffPanelData}) {
     return () => clearInterval(interval);
   }, []);
 
-  //Calculate patient inactivity
+  //* Calculate patient inactivity
   const secondsAgo = staffPanelData.lastActivity
     ? Math.floor((now - staffPanelData.lastActivity) / 1000)
     : 0;
-  //secondsAgo rounded to the nearest 5 so it displays in 5s increments
+
+  //* secondsAgo rounded to the nearest 5 so it displays in 5s increments
   const roundedSeconds = Math.floor(secondsAgo / 5) * 5;
-  //Inactivity message
+
+  //* Inactivity message
   let activityMessage= "";
   if (secondsAgo < 5) {
     activityMessage = "Just now";
@@ -47,20 +79,19 @@ export default function StaffPanel({staffPanelData}) {
     activityMessage = "30+ seconds ago";
   }
 
-  //Default state when no activity
+  //* Default state when no activity
   const notStarted = staffPanelData.lastActivity === null;
-  //Active state when onFocus triggers
-  const active =
-    !notStarted &&
-    secondsAgo < 30;
-  //Inactive state when no activity for 30 seconds
-  const inactive =
-    !notStarted &&
-    secondsAgo >= 30;
-  //Submitted state
+
+  //* Active state when onFocus triggers
+  const active = !notStarted && secondsAgo < 30;
+
+  //* Inactive state when no activity for 30 seconds
+  const inactive = !notStarted && secondsAgo >= 30;
+
+  //* Submitted state
   const submitted = staffPanelData.submitted;
 
-  //Which field is active & it's data
+  //* Which field is active & it's data
   const activeField = allFields.find(
     field => field.key === staffPanelData.activeField
   );
@@ -69,7 +100,7 @@ export default function StaffPanel({staffPanelData}) {
   const sectionStyle = "flex flex-col gap-6";
   return (
     <div className="flex flex-col gap-6">
-      {/* Header */}
+      {/*//* Header */}
       <div className="flex items-center justify-between">
         <div className="text-foreground flex gap-1 flex-col">
           <h1 className="flex items-center gap-2 text-xl font-bold">
@@ -86,78 +117,114 @@ export default function StaffPanel({staffPanelData}) {
         </div>
       </div>
 
-      {/* Progress Bar Container */}
-      <div className={`z-10 sticky top-5 lg:top-[-32]
+      {/* //* Progress Stats Container */}
+      <div className={`z-10 sticky top-5 lg:-top-8
         ${submitted
-        ? "bg-blue-50 border-blue-300"
-        : active
-        ? "bg-green-50 border-green-500"
-        : inactive
-        ? "bg-amber-50 border-amber-500"
-        : "bg-card border-border"}
-        flex flex-col gap-4 rounded-lg dark:bg-card border p-4 shadow-sm`}>
+          //* if sumitted
+          ? "bg-blue-50 border-blue-300"
+          : active
+          //* if active
+          ? "bg-green-50 border-green-500"
+          : inactive
+          //* if inactive
+          ? "bg-amber-50 border-amber-500"
+          //* if not started
+          : "bg-card border-border"
+        }
+        flex flex-col gap-4 rounded-lg dark:bg-card border p-4 shadow-sm`}
+      >
+
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className={`w-3 h-3 rounded-full ${submitted ? "bg-accent" : active ? "bg-green-500" : inactive ? "bg-amber-500" :  "bg-muted"}`}></div>
+
+            {/*//* Status indicator dot */}
+            <div className={`w-3 h-3 rounded-full ${submitted ? "bg-accent" : active ?
+              "bg-green-500" : inactive ? "bg-amber-500" :  "bg-muted"}`}
+            >
+            </div>
+
+            {/*//* Status text */}
             <div>
               <span
                 className={`text-md font-bold ${
                   submitted
+                    //* if sumitted
                     ? "text-accent"
+                    //* if active
                     : active
                     ? "text-green-500"
+                    //* if inactive
                     : inactive
                     ? "text-amber-500"
+                    //* if not started
                     : "text-muted-foreground"
                 }`}
               >
                 {submitted
+                  //* if sumitted
                   ? "Submitted"
+                  //* if active
                   : active
                   ? "Active"
+                  //* if inactive
                   : inactive
                   ? "Inactive"
+                  //* if not started
                   : "Not Started"}
               </span>
+
+              {/*//* Activity message */}
               <p className="text-sm text-muted-foreground">
-                {submitted
+                {
+                  //* if submitted
+                  submitted
                   ? `Submitted at ${new Date(staffPanelData.submittedAt).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}`
+                  //* if active
                   : active
                   ? "Patient is currently filling out the form"
+                  //* if inactive
                   : inactive
                   ? "Patient is away"
-                  : "Waiting for patient to begin"}
+                  //* if not started
+                  : "Waiting for patient to begin"
+                }
               </p>
             </div>
           </div>
+
+          {/* //* Completion % Text */}
           <span className="flex flex-col items-center text-lg text-foreground font-bold">
             {staffPanelData.completionPct}%
             <p className="text-sm">Complete</p>
           </span>
         </div>
-        {/* Progress Bar */}
-        <div className="h-3 rounded-full bg-muted">
-          <div className={`h-full rounded-full bg-accent`} style={{ width: `${staffPanelData.completionPct}%`, transition: "width 0.2s ease" }} />
-        </div>
+
+        {/* //* Progress Bar */}
+        <ProgressBar completionPct={staffPanelData.completionPct} />
+        {/* //* Last Activity */}
         {!submitted && (active || inactive) && (
           <p className="text-xs text-muted-foreground">
             {`Last Activity: ${activityMessage}`}
           </p>
         )}
-        {/* Currently Entering Field */}
+
+        {/* //* Currently Entering Field */}
         {active && <div className={`flex items-center gap-2 text-sm text-accent ${activeField ? "" : "hidden"}`}>
           <Activity className="w-4 h-4"/>
           <p>Entering: <span className="font-bold">
             {activeField?.label}</span>
           </p>
           <TypeAnimation/>
-        </div>}
+        </div>
+        }
       </div>
-      {/* Info Cards */}
-      {/* Personal Information */}
+
+      {/* //* Info Cards */}
+
+      {/* //*Personal Information */}
       <section className={sectionStyle}>
         <SectionHeader icon={User} title="Personal Information" />
         <div className={infoGroupStyle}>
@@ -169,7 +236,7 @@ export default function StaffPanel({staffPanelData}) {
           ))}
         </div>
       </section>
-      {/* Contact Information */}
+      {/* //* Contact Information */}
       <section className={sectionStyle}>
         <SectionHeader icon={Phone} title="Contact Information" />
         <div className={infoGroupStyle}>
@@ -181,7 +248,7 @@ export default function StaffPanel({staffPanelData}) {
           ))}
         </div>
       </section>
-      {/* Additional Information */}
+      {/* //* Additional Information */}
       <section className={sectionStyle}>
         <SectionHeader icon={Globe} title="Additional Information" />
         <div className={infoGroupStyle}>
@@ -193,7 +260,7 @@ export default function StaffPanel({staffPanelData}) {
           ))}
         </div>
       </section>
-      {/* Emergency Contact */}
+      {/* //* Emergency Contact */}
       <section className={sectionStyle}>
         <SectionHeader icon={Heart} title="Emergency Contact" />
         <div className={infoGroupStyle}>
@@ -205,34 +272,18 @@ export default function StaffPanel({staffPanelData}) {
           ))}
         </div>
       </section>
-      {/* Statistics */}
+      {/* //* Statistics */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <StatCard
-          current={requiredFields.filter((field) => staffPanelData.formData[field]).length}
-          total={requiredFields.length}
-          label="Required fields"
-        />
-        <StatCard
-          current={Object.keys(staffPanelData.errors).length}
-          label="Validation errors"
-          started={staffPanelData.lastActivity !== null}
-        />
-        <StatCard
-          current={
-            Object.keys(staffPanelData.formData)
-              .filter(
-                (field) =>
-                  field !== "submitted" &&
-                  !requiredFields.includes(field) &&
-                  staffPanelData.formData[field]
-              ).length
-          }
-          total={
-            Object.keys(staffPanelData.formData)
-              .filter((field) => field !== "submitted").length - requiredFields.length
-          }
-          label="Optional fields"
-        />
+        {stats.map((stat)=>(
+          <StatCard
+            key={stat.id}
+            id={stat.id}
+            current={stat.current}
+            total={stat.total}
+            label={stat.label}
+            notStarted={notStarted}
+          />
+        ))}
       </div>
     </div>
   )

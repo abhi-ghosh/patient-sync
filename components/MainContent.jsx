@@ -1,8 +1,10 @@
 import {User,Monitor} from "lucide-react";
 export default function MainContent({whichForm, setWhichForm, children}){
+  const style = "max-h-screen scrollbar-thin scrollbar-thumb-accent overflow-y-auto border-r-2 border-border px-8 py-8"
   const [PatientPanel,StaffPanel] = children;
   return (
     <div className="w-full h-full">
+      {/*//* Mobile View */}
       <div className="block lg:hidden">
         <div className="bg-secondary text-muted-foreground font-bold flex justify-center items-center">
           <button className={`flex gap-2 flex-1 justify-center p-4 items-center border-b-2
@@ -20,12 +22,15 @@ export default function MainContent({whichForm, setWhichForm, children}){
           {whichForm === "patient" ? PatientPanel : StaffPanel}
         </div>
       </div>
+
+      {/*//* Desktop View */}
       <div className="hidden lg:grid lg:grid-cols-2">
-        <div className="max-h-screen overflow-y-auto border-r-2 border-border px-8 py-8">
+        <div className= {style}
+        >
           {PatientPanel}
         </div>
 
-        <div className="max-h-screen overflow-y-auto px-8 py-8">
+        <div className= {style}>
           {StaffPanel}
         </div>
       </div>

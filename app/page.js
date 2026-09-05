@@ -7,20 +7,20 @@ import PatientPanel from "@/components/PatientPanel";
 import ConnectionModal from "@/components/ConnectionModal";
 import {userOptions, defaultPatientState, defaultStaffState, requiredFields} from "@/components/Data";
 export default function Home() {
-  //PatientPanel data
+  //* PatientPanel data
   const [patientPanelData, setPatientPanelData] = useState(defaultPatientState);
 
-  //StaffPanel data
+  //* StaffPanel data
   const [staffPanelData, setStaffPanelData] = useState(defaultStaffState);
 
 
-  //PatientPanel mobile sections button state
+  //* PatientPanel mobile sections button state
   const [whichForm, setWhichForm] = useState("patient");
 
-  //Error & Touched States
+  //* Error & Touched States
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
-  //Field Validator
+  //* Field Validator
   function validateField(name, value) {
   if (requiredFields.includes(name) && value.trim() === "") {
     return "This field is required";
@@ -49,16 +49,17 @@ export default function Home() {
     return "";
   }
 
-  //WebSocket connection UI feedback state
+  //* WebSocket connection UI feedback state
   const [isConnected, setIsConnected] = useState(false);
 
-  //Socket second timer state
+  //* Socket second timer state
   const [seconds, setSeconds] = useState(0);
-  //WebSocket connection
+
+  //* WebSocket connection
   const socket = useRef(null);
   useEffect(() => {
   socket.current = new WebSocket(process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8080");
-  //Time elapsed before the socket connection is considered successful
+  //* Time elapsed before the socket connection is considered successful
   const timer = setInterval(() => {
     setSeconds(prev => prev + 1);
   }, 1000);
@@ -69,7 +70,7 @@ export default function Home() {
     setSeconds(0);
     };
 
-  //Handle incoming messages from the server
+  //* Handle incoming messages from the server
   socket.current.onmessage = (event) => {
     const payload = JSON.parse(event.data);
     setStaffPanelData(prev => ({
@@ -84,20 +85,20 @@ export default function Home() {
     };
   }, []);
 
-  //Theme toggle state
+  //* Theme toggle state
   const [darkMode, setDarkMode] = useState(false);
 
-  //Theme toggle function
+  //* Theme toggle function
   const changeTheme = () => {
     setDarkMode(prev => !prev);
   }
-  //To make sure the theme is set on page load
+  //* To make sure the theme is set on page load
   useEffect(() => {
     document.documentElement.classList.toggle("dark",darkMode);
   }, [darkMode]);
 
 
-  //Form completion % calculator
+  //* Form completion % calculator
   function calculateCompletion(formData) {
   let completed = 0;
   requiredFields.forEach((field) => {
@@ -107,16 +108,21 @@ export default function Home() {
   });
   return Math.round((completed / requiredFields.length) * 100);
   }
-  //Updated completion % for the StaffPanel
+  //* Updated completion % for the StaffPanel
   const completionPct = calculateCompletion(patientPanelData);
 
-  //PatientPanel input handler
+  //* PatientPanel input handler
   const formInputHandler = (e) => {
     let { name, value } = e.target;
-    //Preventing users from entering Alphabets in the phone number fields
+    //* Preventing users from entering Alphabets in the phone number fields
     if (name === "patientNumber" || name === "emergencyNumber") {
       value = value.replace(/[^\d+\-()\s]/g, "");
     }
+    if (name === "firstName" || name === "middleName" || name === "lastName" ||
+        name === "emergencyName" || name === "emergencyRelationship")
+      {
+        value = value.replace(/[^a-zA-Z\s]/g, "");
+      }
     const error = validateField(name, value);
     const updatedErrors = { ...errors };
     if (error) {
@@ -132,10 +138,9 @@ export default function Home() {
         [name]: value
       }
 
-      //payload to send to the server (then StaffPanel will receive it)
+      //* payload to send to the server (then StaffPanel will receive it)
       const payload = {
         formData: updatedValue,
-        status: "active",
         lastActivity: Date.now(),
         activeField: name,
         errors: updatedErrors,
@@ -143,7 +148,7 @@ export default function Home() {
         submittedAt: null,
       };
 
-      //Send the updated form data to the server via WebSocket
+      //* Send the updated form data to the server via WebSocket
       if (socket.current?.readyState === WebSocket.OPEN) {
         socket.current.send(JSON.stringify(payload));
       }
@@ -152,7 +157,7 @@ export default function Home() {
     })
   }
 
-  //Preventing the page from scrolling when the modal is open
+  //* Preventing the page from scrolling when the modal is open
   useEffect(() => {
   if (!isConnected) {
       document.body.classList.add("overflow-hidden");
@@ -164,7 +169,7 @@ export default function Home() {
     };
   }, [isConnected]);
 
-  //Focus Handler for synced form fields when an input is in focus
+  //* Focus Handler for synced form fields when an input is in focus
   const formFocusHandler = (fieldName) => {
         const payload = {
           activeField: fieldName,
@@ -175,7 +180,7 @@ export default function Home() {
         }
       }
 
-  //Blur Handler for synced form fields when an input is blurred (not in focus)
+  //* Blur Handler for synced form fields when an input is blurred (not in focus)
   const formBlurHandler = (e) => {
     const { name, value } = e.target;
     setTouched(prev => ({
@@ -199,12 +204,14 @@ export default function Home() {
       socket.current.send(JSON.stringify(payload));
     }
   };
+
+  //* Form Validation Check
   const isFormValid =
     requiredFields.every((field) => patientPanelData[field].trim() !== "") &&
     Object.keys(errors).length === 0;
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Prevent submitting invalid form
+    //* Prevent submitting invalid form
     if (!isFormValid) return;
     setPatientPanelData(prev => ({
       ...prev,
@@ -213,7 +220,6 @@ export default function Home() {
     const payload = {
       submitted: true,
       submittedAt: Date.now(),
-      status: "submitted",
       activeField: null,
       completionPct: 100,
     };
@@ -222,7 +228,7 @@ export default function Home() {
     }
   };
 
-  //Submission Reset
+  //* Submission Reset
   const resetForm = () => {
     setPatientPanelData(defaultPatientState);
 
@@ -234,6 +240,7 @@ export default function Home() {
       socket.current.send(JSON.stringify(payload));
     }
   };
+console.log(patientPanelData);
   return (
     <main className="bg-card min-h-screen relative">
       {!isConnected && <ConnectionModal seconds={seconds}/>}
@@ -242,7 +249,10 @@ export default function Home() {
           <PatientPanel userOptions={userOptions} patientPanelData={patientPanelData}
             formInputHandler={formInputHandler} completionPct={completionPct}
             formFocusHandler={formFocusHandler} formBlurHandler={formBlurHandler} errors={errors}
-            touched={touched} handleSubmit={handleSubmit} resetForm={resetForm} isFormValid={isFormValid}/>
+            touched={touched} handleSubmit={handleSubmit} resetForm={resetForm} isFormValid={isFormValid}
+            doneReqFields={requiredFields.filter(field => patientPanelData[field].trim() !== "").length}
+            totalReqFields={requiredFields.length}
+          />
           <StaffPanel staffPanelData={staffPanelData}/>
         </MainContent>
     </main>
