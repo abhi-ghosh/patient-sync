@@ -1,12 +1,11 @@
 "use client";
 import { useState, useEffect} from "react";
-import InfoCard from "@/components/InfoCard";
 import {personalFields, contactFields, additionalFields, emergencyFields, requiredFields, allFields} from "@/components/Data";
 import {User, Activity, Phone, Globe, Heart} from "lucide-react";
-import SectionHeader from "@/components/SectionHeader";
 import TypeAnimation from "@/components/TypeAnimation";
 import StatCard from "@/components/StatCard";
 import ProgressBar from "@/components/ProgressBar";
+import StaffSectionContainer from "@/components/StaffSectionContainer";
 export default function StaffPanel({staffPanelData}) {
 
   //* Statistics Array
@@ -96,8 +95,30 @@ export default function StaffPanel({staffPanelData}) {
     field => field.key === staffPanelData.activeField
   );
 
-  const infoGroupStyle = "grid grid-cols-1 md:grid-cols-2 gap-4";
-  const sectionStyle = "flex flex-col gap-6";
+  //* Section Array
+  const sectionArr = [
+        {
+          title : "Personal Information",
+          fields: personalFields,
+          icon: User
+        },
+        {
+          title : "Contact Information",
+          fields: contactFields,
+          icon: Phone
+        },
+        {
+          title : "Additional Information",
+          fields: additionalFields,
+          icon: Globe
+        },
+        {
+          title : "Emergency Contact",
+          fields: emergencyFields,
+          icon: Heart
+        }
+      ];
+
   return (
     <div className="flex flex-col gap-6">
       {/*//* Header */}
@@ -223,55 +244,16 @@ export default function StaffPanel({staffPanelData}) {
       </div>
 
       {/* //* Info Cards */}
+      {sectionArr.map(section => (
+        <StaffSectionContainer
+          key={section.title}
+          icon={section.icon}
+          title={section.title}
+          fields={section.fields}
+          getInfoCardProps={getInfoCardProps}
+        />
+      ))}
 
-      {/* //*Personal Information */}
-      <section className={sectionStyle}>
-        <SectionHeader icon={User} title="Personal Information" />
-        <div className={infoGroupStyle}>
-          {personalFields.map((field) => (
-            <InfoCard
-              key={field.key}
-              {...getInfoCardProps(field)}
-            />
-          ))}
-        </div>
-      </section>
-      {/* //* Contact Information */}
-      <section className={sectionStyle}>
-        <SectionHeader icon={Phone} title="Contact Information" />
-        <div className={infoGroupStyle}>
-          {contactFields.map((field) => (
-            <InfoCard
-              key={field.key}
-              {...getInfoCardProps(field)}
-            />
-          ))}
-        </div>
-      </section>
-      {/* //* Additional Information */}
-      <section className={sectionStyle}>
-        <SectionHeader icon={Globe} title="Additional Information" />
-        <div className={infoGroupStyle}>
-          {additionalFields.map((field) => (
-            <InfoCard
-              key={field.key}
-              {...getInfoCardProps(field)}
-            />
-          ))}
-        </div>
-      </section>
-      {/* //* Emergency Contact */}
-      <section className={sectionStyle}>
-        <SectionHeader icon={Heart} title="Emergency Contact" />
-        <div className={infoGroupStyle}>
-          {emergencyFields.map((field) => (
-            <InfoCard
-              key={field.key}
-              {...getInfoCardProps(field)}
-            />
-          ))}
-        </div>
-      </section>
       {/* //* Statistics */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {stats.map((stat)=>(

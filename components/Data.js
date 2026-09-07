@@ -104,6 +104,9 @@ const emergencyFields = [
   {key: "emergencyName", label: "EMERGENCY CONTACT NAME"},
   {key: "emergencyRelationship", label: "EMERGENCY CONTACT RELATIONSHIP"},
 ];
+
 const allFields = [...personalFields, ...contactFields, ...additionalFields, ...emergencyFields];
+
 const requiredFields = ["firstName", "lastName", "dob", "gender", "patientNumber", "address", "language", "nationality", "emergencyNumber"];
+
 export { userOptions, defaultFormData, defaultPatientState, defaultStaffState, personalFields, contactFields, additionalFields, emergencyFields, requiredFields, allFields };

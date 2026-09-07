@@ -30,14 +30,14 @@ export default function Home() {
     value.trim() &&
     !/^[+]?[\d\s\-()]{7,20}$/.test(value)
   ) {
-    return "Please enter a valid phone number";
+    return "Invalid phone number";
   }
   if (
     name === "email" &&
     value.trim() &&
     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
   ) {
-    return "Please enter a valid email address";
+    return "Invalid email address";
   }
   if (name === "dob" && value) {
     const today = new Date().toISOString().split("T")[0];
@@ -240,7 +240,7 @@ export default function Home() {
       socket.current.send(JSON.stringify(payload));
     }
   };
-console.log(patientPanelData);
+
   return (
     <main className="bg-card min-h-screen relative">
       {!isConnected && <ConnectionModal seconds={seconds}/>}
