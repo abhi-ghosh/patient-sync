@@ -1,6 +1,19 @@
 import TypeAnimation from "@/components/TypeAnimation";
 import {CircleAlert, CircleCheck} from "lucide-react";
 export default function InfoCard({ label, value, focused, required, className = "", inputError, success = false, errorMessage}) {
+  let errorMsg = "";
+  switch (label) {
+    case ("PATIENT NUMBER" || "EMERGENCY CONTACT NUMBER" ):
+      errorMsg = "Invalid phone number";
+      break;
+    case ("EMAIL"):
+      errorMsg = "Invalid email address";
+      break;
+    default: errorMsg = errorMessage;
+      break;
+  }
+
+
   return (
     <div
       className={`flex flex-col gap-2 max-h-30 overflow-y-auto rounded-lg border ${className} wrap-break-word
@@ -31,7 +44,7 @@ export default function InfoCard({ label, value, focused, required, className = 
       </p>
       {inputError && (
       <p className="text-xs text-red-500">
-        {errorMessage}
+        {errorMsg}
       </p>
       )}
     </div>

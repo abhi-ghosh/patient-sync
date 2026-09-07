@@ -20,6 +20,7 @@ export default function Home() {
   //* Error & Touched States
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+
   //* Field Validator
   function validateField(name, value) {
   if (requiredFields.includes(name) && value.trim() === "") {
@@ -30,14 +31,14 @@ export default function Home() {
     value.trim() &&
     !/^[+]?[\d\s\-()]{7,20}$/.test(value)
   ) {
-    return "Invalid phone number";
+    return "Please enter a valid phone number";
   }
   if (
     name === "email" &&
     value.trim() &&
     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
   ) {
-    return "Invalid email address";
+    return "Please enter a valid email address";
   }
   if (name === "dob" && value) {
     const today = new Date().toISOString().split("T")[0];
