@@ -46,7 +46,7 @@ export default function StaffPanel({staffPanelData}) {
     success:
       !!staffPanelData.formData[field.key] &&
       !staffPanelData.errors[field.key],
-    errorMessage: staffPanelData.errors[field.key],
+    errorMessage: staffPanelData.errors[field.key]
   });
 
   //* Current timestamp

@@ -8,6 +8,7 @@ export default function StaffSectionContainer({icon, title, fields, getInfoCardP
           {fields.map((field) => (
             <InfoCard
               key={field.key}
+              name = {field.key}
               {...getInfoCardProps(field)}
             />
           ))}
