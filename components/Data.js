@@ -105,8 +105,115 @@ const emergencyFields = [
   {key: "emergencyRelationship", label: "EMERGENCY CONTACT RELATIONSHIP"},
 ];
 
+const input = [
+  {
+    name: "firstName",
+    label: "First Name",
+    type: "text",
+    required: true,
+    placeholder: "e.g. Abhijit",
+    spellCheck: false,
+  },
+  {
+    name: "middleName",
+    label: "Middle Name",
+    type: "text",
+    required: false,
+    placeholder: "Optional",
+    spellCheck: false,
+  },
+  {
+    name: "lastName",
+    label: "Last Name",
+    type: "text",
+    required: true,
+    placeholder: "e.g. Ghosh",
+    spellCheck: false,
+  },
+  {
+    name: "dob",
+    label: "Date of Birth",
+    type: "date",
+    required: true,
+  },
+  {
+    name: "gender",
+    label: "Gender",
+    type: "select",
+    required: true,
+    options: "genders",
+  },
+
+  {
+    name: "patientNumber",
+    label: "Phone Number",
+    type: "tel",
+    required: true,
+    placeholder: "e.g. +66 00 000 0000",
+  },
+  {
+    name: "email",
+    label: "Email Address",
+    type: "email",
+    required: false,
+    placeholder: "e.g. name@example.com",
+  },
+  {
+    name: "address",
+    label: "Address",
+    type: "textarea",
+    required: true,
+    placeholder: "Street address, city, state, ZIP code",
+    rows: 4,
+  },
+
+  {
+    name: "language",
+    label: "Preferred Language",
+    type: "select",
+    required: true,
+    options: "languages",
+  },
+  {
+    name: "nationality",
+    label: "Nationality",
+    type: "select",
+    required: true,
+    options: "nationalities",
+  },
+  {
+    name: "religion",
+    label: "Religion",
+    type: "select",
+    required: false,
+    options: "religions",
+  },
+
+  {
+    name: "emergencyNumber",
+    label: "Contact Number",
+    type: "tel",
+    required: true,
+    placeholder: "e.g. +66 11 222 3333",
+  },
+  {
+    name: "emergencyName",
+    label: "Contact Name",
+    type: "text",
+    required: false,
+    placeholder: "e.g. Jill Valentine",
+  },
+  {
+    name: "emergencyRelationship",
+    label: "Relationship",
+    type: "text",
+    required: false,
+    placeholder: "e.g. Parent",
+  },
+];
+
 const allFields = [...personalFields, ...contactFields, ...additionalFields, ...emergencyFields];
 
 const requiredFields = ["firstName", "lastName", "dob", "gender", "patientNumber", "address", "language", "nationality", "emergencyNumber"];
 
-export { userOptions, defaultFormData, defaultPatientState, defaultStaffState, personalFields, contactFields, additionalFields, emergencyFields, requiredFields, allFields };
+export { userOptions, defaultFormData, defaultPatientState, defaultStaffState, personalFields, contactFields, additionalFields, emergencyFields, requiredFields, allFields, input };
