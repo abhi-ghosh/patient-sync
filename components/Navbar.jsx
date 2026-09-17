@@ -1,10 +1,13 @@
+import Image from "next/image";
 import {HeartPulse,Sun,Moon} from "lucide-react";
+import icon from "@/assets/icon.png"
 export default function Navbar({changeTheme,darkMode}){
   return (
     <nav className="bg-primary h-16 w-full py-2 px-6 lg:px-8 flex items-center justify-between">
       <div className="flex items-center justify-center gap-4">
-        <div className="flex items-center justify-center bg-accent w-10 h-10 rounded-lg">
-          <HeartPulse className="text-primary-foreground"/>
+        <div className="flex items-center justify-center bg-white w-10 h-10 rounded-lg">
+          {/* <HeartPulse className="text-primary-foreground"/> */}
+          <Image src={icon} width={32} height={32} alt="icon"/>
         </div>
         <div>
           <p className="text-primary-foreground font-bold">Patient Sync</p>
@@ -12,8 +15,8 @@ export default function Navbar({changeTheme,darkMode}){
         </div>
       </div>
       {/* Ligth or Dark Theme Toggle */}
-      <button onClick={changeTheme} className="bg-accent
-        text-primary-foreground w-20 py-2 px-2 rounded-lg flex items-center justify-center
+      <button onClick={changeTheme} className="bg-accent dark:bg-white
+        text-primary-foreground dark:text-accent w-20 py-2 px-2 rounded-lg flex items-center justify-center
         gap-2 cursor-pointer hover:scale-105 active:scale-95 transition-all duration-200 ease">
           {darkMode ? <Sun className="w-4 h-4"/> : <Moon className="w-4 h-4"/>}
           <p className="text-sm font-bold">{darkMode ? "Light" : "Dark"}</p>

@@ -5,6 +5,7 @@ import MainContent from "@/components/MainContent";
 import StaffPanel from "@/components/StaffPanel";
 import PatientPanel from "@/components/PatientPanel";
 import ConnectionModal from "@/components/ConnectionModal";
+import validateField from "@/components/FieldValidator";
 import {userOptions, defaultPatientState, defaultStaffState, requiredFields} from "@/components/Data";
 export default function Home() {
   //* PatientPanel data
@@ -20,35 +21,6 @@ export default function Home() {
   //* Error & Touched States
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
-
-  //* Field Validator
-  function validateField(name, value) {
-  if (requiredFields.includes(name) && value.trim() === "") {
-    return "This field is required";
-  }
-  if (
-    (name === "patientNumber" || name === "emergencyNumber") &&
-    value.trim() &&
-    !/^[+]?[\d\s\-()]{7,20}$/.test(value)
-  ) {
-    return "Please enter a valid phone number";
-  }
-  if (
-    name === "email" &&
-    value.trim() &&
-    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-  ) {
-    return "Please enter a valid email address";
-  }
-  if (name === "dob" && value) {
-    const today = new Date().toISOString().split("T")[0];
-
-    if (value > today) {
-      return "Date of birth cannot be in the future";
-    }
-  }
-    return "";
-  }
 
   //* WebSocket connection UI feedback state
   const [isConnected, setIsConnected] = useState(false);
@@ -100,24 +72,25 @@ export default function Home() {
 
 
   //* Form completion % calculator
-  function calculateCompletion(formData) {
+  function calculateCompletion(formData, formErrors) {
   let completed = 0;
   requiredFields.forEach((field) => {
-    if (formData[field].trim() !== "") {
+    if (formData[field].trim() !== "" && !formErrors[field]) {
       completed++;
     }
   });
   return Math.round((completed / requiredFields.length) * 100);
   }
-  //* Updated completion % for the StaffPanel
-  const completionPct = calculateCompletion(patientPanelData);
+
+  //* Updated completion % for the PatientPanel
+  const completionPct = calculateCompletion(patientPanelData, errors);
 
   //* PatientPanel input handler
   const formInputHandler = (e) => {
     let { name, value } = e.target;
     //* Preventing users from entering Alphabets in the phone number fields
     if (name === "patientNumber" || name === "emergencyNumber") {
-      value = value.replace(/[^\d+\-()\s]/g, "");
+      value = value.replace(/[^\d+\-()]/g, "");
     }
     if (name === "firstName" || name === "middleName" || name === "lastName" ||
         name === "emergencyName" || name === "emergencyRelationship")
@@ -145,7 +118,7 @@ export default function Home() {
         lastActivity: Date.now(),
         activeField: name,
         errors: updatedErrors,
-        completionPct: calculateCompletion(updatedValue),
+        completionPct: calculateCompletion(updatedValue, updatedErrors),
         submittedAt: null,
       };
 
@@ -251,7 +224,7 @@ export default function Home() {
             formInputHandler={formInputHandler} completionPct={completionPct}
             formFocusHandler={formFocusHandler} formBlurHandler={formBlurHandler} errors={errors}
             touched={touched} handleSubmit={handleSubmit} resetForm={resetForm} isFormValid={isFormValid}
-            doneReqFields={requiredFields.filter(field => patientPanelData[field].trim() !== "").length}
+            doneReqFields={requiredFields.filter(field => patientPanelData[field].trim() !== "" && !errors[field]).length}
             totalReqFields={requiredFields.length}
           />
           <StaffPanel staffPanelData={staffPanelData}/>
