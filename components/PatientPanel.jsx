@@ -5,6 +5,7 @@ import ProgressBar from "@/components/ProgressBar";
 import PatientInputSection from "@/components/PatientInputSection";
 import InputComponent from "@/components/InputComponent";
 import {input} from "@/components/Data";
+import PanelHeader from "@/components/PanelHeader";
 export default function PatientPanel({userOptions, patientPanelData, formInputHandler, doneReqFields, totalReqFields,
   completionPct, formFocusHandler, formBlurHandler, errors, touched, handleSubmit, resetForm, isFormValid}) {
 
@@ -46,18 +47,19 @@ export default function PatientPanel({userOptions, patientPanelData, formInputHa
   ];
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-6">
+
       {/*//* Header */}
-      <div className="text-foreground flex gap-1 flex-col">
-        <h1 className="flex items-center gap-2 text-xl font-bold">
-          <div className="bg-secondary p-2 rounded-lg items-center justify-center border border-accent">
-            <User className="text-accent w-4 h-4" />
-          </div>
-          Patient Registration
-        </h1>
-        <p className="text-sm text-muted-foreground">Fields marked <span className="text-red-500">*</span> are required</p>
-      </div>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-10">
+      <PanelHeader icon={User} title="Patient Registration"
+          tag={
+            <>
+              Fields with <span className="text-red-500">*</span> are required
+            </>
+          }
+      />
+
+      {/*//* Form */}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
          {/*//* Progress Bar */}
         <div className="z-10 sticky top-5 lg:-top-8 bg-card flex flex-col gap-3 rounded-lg border border-border p-4 shadow-sm">
           <div className="flex items-center justify-between">

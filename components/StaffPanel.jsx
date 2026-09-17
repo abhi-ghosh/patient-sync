@@ -1,11 +1,12 @@
 "use client";
 import { useState, useEffect} from "react";
 import {personalFields, contactFields, additionalFields, emergencyFields, requiredFields, allFields} from "@/components/Data";
-import {User, Activity, Phone, Globe, Heart} from "lucide-react";
+import {Monitor, User, Activity, Phone, Globe, Heart} from "lucide-react";
 import TypeAnimation from "@/components/TypeAnimation";
 import StatCard from "@/components/StatCard";
 import ProgressBar from "@/components/ProgressBar";
 import StaffSectionContainer from "@/components/StaffSectionContainer";
+import PanelHeader from "@/components/PanelHeader";
 export default function StaffPanel({staffPanelData}) {
   //* Statistics Array
   const stats = [
@@ -121,22 +122,14 @@ export default function StaffPanel({staffPanelData}) {
 
   return (
     <div className="flex flex-col gap-6">
+
       {/*//* Header */}
-      <div className="flex items-center justify-between">
-        <div className="text-foreground flex gap-1 flex-col">
-          <h1 className="flex items-center gap-2 text-xl font-bold">
-            <div className="bg-secondary p-2 rounded-lg items-center justify-center border border-accent">
-              <User className="text-accent w-4 h-4" />
-            </div>
-            Staff Monitor
-          </h1>
-          <p className="text-sm text-muted-foreground">Real-time patient form activity</p>
-        </div>
+      <PanelHeader icon={Monitor} title="Staff Monitor" tag="Real-time patient form activity">
         <div className="flex items-center gap-2">
           <div className={`w-3 h-3 rounded-full ${active ? "bg-green-500" :"bg-muted"}`}></div>
           <p className="text-sm text-muted-foreground font-bold">{active ? "ACTIVE" : "OFFLINE"}</p>
         </div>
-      </div>
+      </PanelHeader>
 
       {/* //* Progress Stats Container */}
       <div className={`z-10 sticky top-5 lg:-top-8
