@@ -1,6 +1,6 @@
 const userOptions = {
-  genders: ["Male", "Female", "Other", "Prefer not to say"],
-  languages: ["Thai", "English", "Mandarin", "Lithuanian", "French", "Spanish", "German", "Hindi", "Arabic"],
+  genders: ["Male", "Female", "Other", "Prefer not to say"].map(x=>x.toUpperCase()),
+  languages: ["Thai", "English", "Mandarin", "Lithuanian", "French", "Spanish", "German", "Hindi", "Arabic"].map(x=>x.toUpperCase()),
   nationalities: ["Afghan", "Albanian", "Algerian", "Andorran", "Angolan",
   "Antiguan or Barbudan", "Argentine", "Armenian", "Australian", "Austrian",
   "Azerbaijani", "Bahamian", "Bahraini", "Bangladeshi", "Barbadian",
@@ -40,10 +40,10 @@ const userOptions = {
   "Tuvaluan", "Ugandan", "Ukrainian", "Emirati", "British",
   "American", "Uruguayan", "Uzbek", "Ni-Vanuatu", "Vatican",
   "Venezuelan", "Vietnamese", "Yemeni", "Zambian", "Zimbabwean"
-],
+].map(x=>x.toUpperCase()),
   religions: [
     "Buddhism", "Christianity", "Hinduism", "Islam", "Judaism", "Other"
-  ]
+  ].map(x=>x.toUpperCase())
 };
 
 const defaultFormData = {
@@ -190,13 +190,6 @@ const input = [
   },
 
   {
-    name: "emergencyNumber",
-    label: "Contact Number",
-    type: "tel",
-    required: true,
-    placeholder: "e.g. +66 11 222 3333",
-  },
-  {
     name: "emergencyName",
     label: "Contact Name",
     type: "text",
@@ -210,6 +203,14 @@ const input = [
     required: false,
     placeholder: "e.g. Parent",
   },
+
+  {
+    name: "emergencyNumber",
+    label: "Contact Number",
+    type: "tel",
+    required: true,
+    placeholder: "e.g. +66 11 222 3333",
+  }
 ];
 
 const allFields = [...personalFields, ...contactFields, ...additionalFields, ...emergencyFields];

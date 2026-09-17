@@ -7,12 +7,12 @@ import StatCard from "@/components/StatCard";
 import ProgressBar from "@/components/ProgressBar";
 import StaffSectionContainer from "@/components/StaffSectionContainer";
 export default function StaffPanel({staffPanelData}) {
-
   //* Statistics Array
   const stats = [
     {
       label: "Required fields",
-      current: requiredFields.filter((field) => staffPanelData.formData[field]).length,
+      current: requiredFields.filter((field) =>
+        staffPanelData.formData[field].trim() && !staffPanelData.errors[field]).length,
       total: requiredFields.length,
       id: "required"
     },

@@ -22,13 +22,22 @@
     //* Allow letters, spaces, hyphens, and apostrophes in names
     const nameRegex = /^[\p{L}]+(?:[\s'-][\p{L}]+)*$/u;
 
+    let nameError = "";
+    if (name === "firstName"){
+      nameError = "first name";
+    } else if (name === "middleName"){
+      nameError = "middle name";
+    } else if (name === "lastName"){
+      nameError = "last name";
+    } else nameError = "name";
+
     //* Validate name length and format when a name has been entered
     if (
       nameFields.includes(name) &&
       trimmedValue &&
       (trimmedValue.length < 2 || !nameRegex.test(trimmedValue))
     ) {
-      return "Please enter a valid name";
+      return `Please enter a valid ${nameError}`;
     }
 
     //* Fields that should contain an international phone number

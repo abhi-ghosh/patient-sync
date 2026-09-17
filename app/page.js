@@ -109,7 +109,7 @@ export default function Home() {
     setPatientPanelData(prev => {
       const updatedValue = {
         ...prev,
-        [name]: value
+        [name]: value.toUpperCase()
       }
 
       //* payload to send to the server (then StaffPanel will receive it)

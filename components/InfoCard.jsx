@@ -1,14 +1,28 @@
 import TypeAnimation from "@/components/TypeAnimation";
 import {CircleAlert, CircleCheck} from "lucide-react";
 export default function InfoCard({ label, name, value, focused, required, className = "", inputError, success = false, errorMessage}) {
+
+  //* Error messages
   let errorMsg = "";
   switch (name) {
     case ("patientNumber"):
     case ("emergencyNumber"):
       errorMsg = "Invalid phone number";
       break;
+    case ("firstName"):
+      errorMsg = "Invalid first name";
+      break;
+    case ("lastName"):
+      errorMsg = "Invalid last name";
+      break;
+    case ("middleName"):
+      errorMsg = "Invalid middle name";
+      break;
     case ("email"):
       errorMsg = "Invalid email address";
+      break;
+    case ("emergencyName"):
+      errorMsg = "Invalid contact name";
       break;
     default: errorMsg = errorMessage;
       break;

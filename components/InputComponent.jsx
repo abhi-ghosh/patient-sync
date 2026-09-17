@@ -63,7 +63,7 @@ export default function InputComponent({userOptions, patientPanelData, label, na
       "email",
       "address",
       "religion",
-      "emergencyRelationship",
+      "emergencyNumber",
     ].includes(name)
       ? "md:col-span-2"
       : "";
@@ -83,7 +83,7 @@ export default function InputComponent({userOptions, patientPanelData, label, na
           {/*//* If an input has been touched and there is an error, show an error message */}
           {/*//* If no error, show a checkmark */}
           {touched[name] &&
-            <p className={`text-xs px-1 md:px-4 py-0.5 rounded-sm absolute right-0 top-[-9] border dark:bg-card
+            <p className={`text-xs px-1 md:px-2 py-0.5 rounded-sm absolute right-0 top-[-9] border dark:bg-card
                 ${errors[name] ? `bg-red-100 border-red-500 text-red-500`
                   //* If no value, hide the checkmark (this is for optional values mainly, works for all though)
                   :`bg-green-100 border-green-500 text-green-500 ${!patientPanelData[name].trim() && "hidden"}`}`}
