@@ -1,6 +1,18 @@
-# 🏥 Patient Sync
+<div align="center">
 
-A real-time patient registration dashboard built with **Next.js**, **React**, **Tailwind CSS**, **Vitest** and **WebSockets**.
+**# 🏥 Patient Sync**
+
+**### A real-time patient registration dashboard built with modern frontend technology.**
+
+<br />
+
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)
+![WebSockets](https://img.shields.io/badge/WebSockets-010101?style=for-the-badge&logo=socketdotio&logoColor=white)
+
+</div>
 
 Patient Sync simulates a digital hospital registration workflow where a patient fills out a registration form while hospital staff monitor the process live in real time. Every interaction—from typing into a field to successful registration—is synchronized instantly between both dashboards.
 
