@@ -1,5 +1,4 @@
 import { User,Phone, Heart, Globe } from "lucide-react";
-import SectionHeader from "@/components/SectionHeader";
 import SubmissionSuccess from "@/components/SubmissionSuccess";
 import ProgressBar from "@/components/ProgressBar";
 import PatientInputSection from "@/components/PatientInputSection";

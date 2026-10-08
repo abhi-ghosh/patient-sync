@@ -5,7 +5,7 @@ import MainContent from "@/components/MainContent";
 import StaffPanel from "@/components/StaffPanel";
 import PatientPanel from "@/components/PatientPanel";
 import ConnectionModal from "@/components/ConnectionModal";
-import validateField from "@/components/FieldValidator";
+import validateField from "@/utils/FieldValidator";
 import {userOptions, defaultPatientState, defaultStaffState, requiredFields} from "@/components/Data";
 export default function Home() {
   //* PatientPanel data
