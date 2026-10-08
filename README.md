@@ -1,8 +1,8 @@
 <div align="center">
 
-**# 🏥 Patient Sync**
+# 🏥 Patient Sync
 
-**### A real-time patient registration dashboard built with modern frontend technology.**
+### A real-time patient registration dashboard built with modern frontend technology.
 
 <br />
 
